@@ -2,9 +2,11 @@ package exercises.exercise10;
 
 import java.util.*;
 
-public class CollectionAssisted {
+public class CollectionAssisted 
+{
 
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
 		//creating arraylist
 		System.out.println("ArrayList");
 		ArrayList<String> city=new ArrayList<String>();   
