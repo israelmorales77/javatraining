@@ -10,7 +10,7 @@ public class Customer
 		return customerID;
 	}
 	
-	private static long setCustomerID()
+	public static long setCustomerID()
 	{
 		
 		return customerID;
@@ -22,7 +22,7 @@ public class Customer
 		return firstName;
 	}
 
-	private static void setFirstName(String firstName) 
+	public static void setFirstName(String firstName) 
 	{
 		Customer.firstName = firstName;
 	}
@@ -32,19 +32,9 @@ public class Customer
 		return lastName;
 	}
 
-	private static void setLastName(String lastName) 
+	public static void setLastName(String lastName) 
 	{
 		Customer.lastName = lastName;
-	}
-
-	public static Gender getGender() 
-	{
-		return gender;
-	}
-
-	private static void setGender(Gender gender) 
-	{
-		Customer.gender = gender;
 	}
 
 	public static boolean isNewCustomer() 
@@ -52,7 +42,7 @@ public class Customer
 		return newCustomer;
 	}
 
-	private static void setNewCustomer(boolean newCustomer) 
+	public static void setNewCustomer(boolean newCustomer) 
 	{
 		Customer.newCustomer = newCustomer;
 	}
@@ -62,7 +52,7 @@ public class Customer
 		return phoneNumber;
 	}
 
-	private static void setPhoneNumber(String phoneNumber) 
+	public static void setPhoneNumber(String phoneNumber) 
 	{
 		Customer.phoneNumber = phoneNumber;
 	}
@@ -71,8 +61,7 @@ public class Customer
 
 	private static long customerID = 0L;
 	private static String firstName = null;
-	private static String lastName = null;
-	private static Gender gender;
+	private static String lastName = null;	
 	private static boolean newCustomer = false;
 	private static String phoneNumber = null;
 }

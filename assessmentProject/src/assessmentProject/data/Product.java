@@ -9,7 +9,7 @@ public class Product
 	{
 		return productID;
 	}
-	private static void setProductID(long productID) 
+	public static void setProductID(long productID) 
 	{
 		Product.productID = productID;
 	}
@@ -17,7 +17,7 @@ public class Product
 	{
 		return skuID;
 	}
-	private static void setSkuID(long skuID) 
+	public static void setSkuID(long skuID) 
 	{
 		Product.skuID = skuID;
 	}
@@ -25,7 +25,7 @@ public class Product
 	{
 		return barcode;
 	}
-	private static void setBarcode(long barcode) 
+	public static void setBarcode(long barcode) 
 	{
 		Product.barcode = barcode;
 	}
@@ -33,7 +33,7 @@ public class Product
 	{
 		return productName;
 	}
-	private static void setProductName(String productName) 
+	public static void setProductName(String productName) 
 	{
 		Product.productName = productName;
 	}
@@ -41,7 +41,7 @@ public class Product
 	{
 		return stockCount;
 	}
-	private static void setStockCount(long stockCount) 
+	public static void setStockCount(long stockCount) 
 	{
 		Product.stockCount = stockCount;
 	}
@@ -49,9 +49,18 @@ public class Product
 	{
 		return price;
 	}
-	private static void setPrice(double price) 
+	public static void setPrice(double price) 
 	{
 		Product.price = price;
+	}
+	
+	public static boolean isInStock() 
+	{
+		return isInStock;
+	}
+	public static void setInStock(boolean isInStock) 
+	{
+		Product.isInStock = isInStock;
 	}
 	
 	//Attributes here
@@ -62,4 +71,5 @@ public class Product
 	private static String productName = null;
 	private static long stockCount = 0L;
 	private static double price = 0.00D;
+	private static boolean isInStock = false;
 }
