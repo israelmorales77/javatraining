@@ -10,9 +10,9 @@ public class TitleScreen
 	
 	private static void displayWelcomeMessage()
 	{				
-		String welcomeMessage = "Welcome to Cart: A Product Ordering App";
+		String welcomeMessage = "Welcome to the LockedMe.com App";
 		System.out.println(welcomeMessage);
-		String developerMessage = "Cart has been written by Israel Morales";
+		String developerMessage = "This LockedMe.com product has been written by Israel Morales";
 		System.out.println(developerMessage);
 		String continueMessage = "To proceed to the Main Menu please press c...";
 		System.out.println(continueMessage);
@@ -23,30 +23,45 @@ public class TitleScreen
 	{
 		displayWelcomeMessage();
 	}
-	private static void generateMainScreen() throws InputMismatchException
+	
+	public static void processInput()
 	{
 		Scanner inputChoice = new Scanner(System.in);
-		
-		getWelcomeMessage();		
-		
-		try
-		{			
-			optionChosen = inputChoice.next();
+				
+		optionChosen = inputChoice.next();
+		do
+		{
 			if(optionChosen.matches("x") || optionChosen.matches("X"))
 			{
 				System.out.println("Exiting the application as requested...");
+				System.exit(0);
 			}
 			else if(optionChosen.matches("c") || optionChosen.matches("C"))
 			{
 				System.out.println("Going to the application main menu as requested...");
 			}
+			else
+			{
+				System.out.println("Error with your selection");
+				try {
+					displayMainScreen();
+				} catch (InputMismatchException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
-		catch(InputMismatchException ex)
-		{
-			System.out.println("Ooops! Try again!");			
-		}
+		while(inputChoice.hasNext());
 		
-		inputChoice.close();		
+		
+		inputChoice.close();
+	}
+	
+	private static void generateMainScreen()
+	{
+		getWelcomeMessage();		
+		processInput();
 	}
 	
 	public static void displayMainScreen() throws Exception

@@ -1,0 +1,32 @@
+<!-- 
+ ~ Hibernate Search, full-text search for your domain model
+ ~
+ ~ License: GNU Lesser General Public License (LGPL), version 2.1 or later
+ ~ See the lgpl.txt file in the root directory or <http://www.gnu.org/licenses/lgpl-2.1.html>.
+   -->
+<hibernate-configuration>
+<session-factory>
+
+<!-- Database Settings -->
+<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/demo</property>
+<property name="hibernate.connection.username">root</property>
+<property name="hibernate.connection.password">Simplilearn</property>
+
+<property name="connection.pool_size">3</property>
+
+<!-- SQL Dialect -->
+<!-- <property name="dialect">org.hibernate.dialect.MYSQLDialect</property>-->
+
+<property name ="current_session_context_class">thread</property>
+
+   <property name="show_sql">true</property>
+    <property name="format_sql">true</property>
+<!--  Drop and Create table -->
+<property name="hibernate.hbm2ddl.auto">create-drop</property>
+
+<!--  Mapping class -->
+<mapping class="com.Student.Student"/>
+
+</session-factory>
+</hibernate-configuration>
