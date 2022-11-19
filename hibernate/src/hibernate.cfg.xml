@@ -9,11 +9,11 @@
 
 <!-- Database Settings -->
 <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/demo</property>
+<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/java_training</property>
 <property name="hibernate.connection.username">root</property>
 <property name="hibernate.connection.password">Simplilearn</property>
 
-<property name="connection.pool_size">3</property>
+<property name="connection.pool_size">5</property>
 
 <!-- SQL Dialect -->
 <!-- <property name="dialect">org.hibernate.dialect.MYSQLDialect</property>-->
