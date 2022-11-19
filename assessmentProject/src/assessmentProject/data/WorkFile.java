@@ -26,54 +26,77 @@ public class WorkFile implements FileActions
 		WorkFile.fileAction = action;
 		
 	}
+	
+	public static String getRootPath() 
+	{
+		// TODO Auto-generated method stub
+		return WorkFile.MAIN_WORKPATH;
+	}
 
-	@Override
-	public File addFile(String fileName) throws FileAlreadyExistsException 
+	public File addFile(String fileName) throws FileAlreadyExistsException, NullPointerException 
 	{
 		
 		WorkFile.fileAction = 1;
 		
-		setWorkingDirectory();
+		setPathInfo();
 		
-		getWorkingDirectory();
-		
-		try
-		{			
-			workingFile.createNewFile();
-		}
-		catch(Exception ex)
+		if(fileName.length()>0 && !fileName.isEmpty())
 		{
-			System.out.println("Problems adding the file");
+			WorkFile.fileName = fileName;
+			directoryPathInfo.resolve(MAIN_WORKPATH.concat(fileName));
+			try
+			{
+				System.out.println("Working on creating your new file");
+							
+				//workingFile.createNewFile();
+			}
+			catch(Exception ex)
+			{
+				System.out.println("There were problems creating a new file");			
+			}
+			finally
+			{
+				System.out.println("Your file request has been processed.");
+			}
 		}
-		finally
+		else
 		{
-			System.out.println("The requested new file has been added");
+			System.out.println("No filename was specified...");
 		}
 		
 		return workingFile;
 	}
-
-	@Override
+	
 	public int deleteFile(String fileName) 
 	{
 		
 		WorkFile.fileAction = 2;
 		
 		setPathInfo();
-		getPathInfo();
+		getPathInfo();		
 		
-		try
-		{			
-			workingFile.delete();
-		}
-		catch(Exception ex)
+		if(!fileName.isEmpty() && fileName.length()>0)
 		{
-			System.out.println("Problems deleting the file");
+			WorkFile.fileName = fileName;
+			directoryPathInfo.resolve(MAIN_WORKPATH.concat(fileName));
+			
+			try
+			{			
+				workingFile.delete();
+			}
+			catch(Exception ex)
+			{
+				System.out.println("Problems deleting the file");
+			}
+			finally
+			{
+				System.out.println("Your request has been processed");
+			}
 		}
-		finally
+		else
 		{
-			System.out.println("The requested file has been processed");
-		}
+			
+		}		
 		
 		return WorkFile.fileActionResult;
 	}
@@ -151,6 +174,17 @@ public class WorkFile implements FileActions
 	}		
 	
 	
+	public static WorkFile getMyFile() 
+	{
+		return myFile;
+	}
+
+	public static void setMyFile(WorkFile myFile) 
+	{
+		WorkFile.myFile = myFile;
+	}
+
+
 	private static File workingFile = null;
 	private static File workingDirectory = null;
 	private static String fileName = null;
@@ -164,7 +198,6 @@ public class WorkFile implements FileActions
 	
 	private static boolean workingDirectoryExists = false;
 	
-	
-
+	private static WorkFile myFile = null;
 		
 }

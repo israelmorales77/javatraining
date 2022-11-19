@@ -5,7 +5,6 @@ import java.nio.file.FileAlreadyExistsException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import assessmentProject.data.*;
 import assessmentProject.data.WorkFile;
 
 public class MainMenuScreen
@@ -176,8 +175,10 @@ public class MainMenuScreen
 		{
 			System.out.println("Please type the name of the file you wish to add:");
 			MainMenuScreen.fileName = fileNameInput.next();
-			getFileNameString();
-			myFile.addFile(MainMenuScreen.fileName);
+			System.out.println("Working your request to add file ... "+getFileNameString().toString());
+			System.out.println("Accessing working path at ... "+WorkFile.getRootPath());
+			WorkFile.setMyFile(new WorkFile(fileName,WorkFile.getRootPath().concat(fileName),1));
+			myFile.addFile(getFileNameString());
 		}
 		catch (FileAlreadyExistsException e1) 
 		{
@@ -202,9 +203,9 @@ public class MainMenuScreen
 		try 
 		{
 			System.out.println("Please type the name of the file you wish to delete:");
-			MainMenuScreen.fileName = fileNameInput.next();
-			getFileNameString();
-			myFile.deleteFile(MainMenuScreen.fileName);
+			MainMenuScreen.fileName = fileNameInput.next();			
+			System.out.println("Processing you deletion request of file... "+getFileNameString());
+			myFile.deleteFile(getFileNameString());
 		}
 		catch (NullPointerException npx) 
 		{
