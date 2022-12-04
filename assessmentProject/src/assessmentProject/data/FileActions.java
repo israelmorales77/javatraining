@@ -1,14 +1,14 @@
 package assessmentProject.data;
 
-import java.io.File;
+import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 
 public interface FileActions 
 {	
 	//Main business requirement necessities
-	File addFile(String fileName) throws FileAlreadyExistsException;
-	int deleteFile(String fileName);
+	void addFile(String fileName) throws NullPointerException,FileAlreadyExistsException, IOException;
+	int deleteFile(String fileName) throws NoSuchFileException, IOException;
 	int searchFile();
 	void displayFileList();
 }

@@ -1,11 +1,11 @@
 package assessmentProject.app;
 
-import java.io.File;
+import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.NoSuchFileException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import assessmentProject.data.*;
 import assessmentProject.data.WorkFile;
 
 public class MainMenuScreen
@@ -63,6 +63,11 @@ public class MainMenuScreen
 		setFileInputToDelete();
 	}
 	
+	public static void promptForFileToSearch()
+	{
+		setFileInputToSearch();
+	}
+	
 	private static void createMenuHeader()
 	{
 		System.out.println("LockedMe.com App: Main Menu");
@@ -73,7 +78,7 @@ public class MainMenuScreen
 		System.out.println("1.  Add a File");
 		System.out.println("2.  Delete a File");
 		System.out.println("3.  Search a File");
-		System.out.println("4.  Get a Sorted File Listing");
+		System.out.println("4.  Get a Sorted File Listing of Existing Files in Directory");
 		System.out.println("5.  Return to Main Menu");
 		System.out.println("6.  Exit the LockedMe.com App");
 	}	
@@ -87,17 +92,21 @@ public class MainMenuScreen
 		{
 			switch(itemChosen)
 			{
-				case 1:	 promptForFileToAdd();						 						 
-						 MainMenuScreen.screenLevel = 1;
+				case 1:	 WorkFile.setFileAction(1);
+						 promptForFileToAdd();						 						 
+						 MainMenuScreen.screenLevel = 1;						
 						 break;
-				case 2:  promptForFileToDelete();
-						 MainMenuScreen.screenLevel = 2;
+				case 2:  WorkFile.setFileAction(2);
+						 promptForFileToDelete();
+						 MainMenuScreen.screenLevel = 2;						 
 						 break;
-				case 3:  myFile.searchFile();
-						 MainMenuScreen.screenLevel = 3;
+				case 3:  WorkFile.setFileAction(3);
+						 promptForFileToSearch();
+						 MainMenuScreen.screenLevel = 3;						 
 						 break;
-				case 4:  myFile.displayFileList();
-						 MainMenuScreen.screenLevel = 4;
+				case 4:  WorkFile.setFileAction(4);
+						 myFile.displayFileList();
+						 MainMenuScreen.screenLevel = 4;						 
 					     break;
 				case 5:  takeToMainMenu();						 
 					 	 break;
@@ -145,7 +154,7 @@ public class MainMenuScreen
 	
 	private static void appExitOption()
 	{
-		 Scanner exitConfirmation = new Scanner(System.in)		 ;
+		 Scanner exitConfirmation = new Scanner(System.in);
 		
 		 MainMenuScreen.screenLevel = 0;
 		 
@@ -170,14 +179,18 @@ public class MainMenuScreen
 	
 	private static void setFileInputToAdd()
 	{
-		Scanner fileNameInput = new Scanner(System.in);
+		Scanner fileNameInput = new Scanner(System.in);		
 		
 		try 
 		{
 			System.out.println("Please type the name of the file you wish to add:");
 			MainMenuScreen.fileName = fileNameInput.next();
-			getFileNameString();
-			myFile.addFile(MainMenuScreen.fileName);
+			System.out.println("File entered was " + MainMenuScreen.fileName);
+			WorkFile.setFileName(MainMenuScreen.fileName);
+			System.out.println("Will process file " + WorkFile.getFileName());
+			WorkFile.setFilePath(WorkFile.getFileName());
+			
+			myFile.addFile(WorkFile.getFileName());			
 		}
 		catch (FileAlreadyExistsException e1) 
 		{
@@ -191,8 +204,12 @@ public class MainMenuScreen
 			System.out.println("Unable to add the new file...");
 			System.out.println("Back to main menu...");
 			takeToMainMenu();							
-		 }
+		 } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		fileNameInput.close();
+	
 	}
 	
 	private static void setFileInputToDelete()
@@ -203,12 +220,34 @@ public class MainMenuScreen
 		{
 			System.out.println("Please type the name of the file you wish to delete:");
 			MainMenuScreen.fileName = fileNameInput.next();
+			WorkFile.setFileName(MainMenuScreen.getFileNameString());
+			System.out.println("Processing your request for " + getFileNameString());
+			myFile.deleteFile(MainMenuScreen.getFileNameString());
+		}		
+		catch (NullPointerException | IOException npx) 
+		{
+			System.out.println("Unable to delete the specified file...");
+			System.out.println("Back to main menu...");
+			takeToMainMenu();							
+		 }
+		
+		fileNameInput.close();
+	}
+	
+	private static void setFileInputToSearch()
+	{
+		Scanner fileNameInput = new Scanner(System.in);
+		
+		try 
+		{
+			System.out.println("Please type the name of the file you wish to search for:");
+			MainMenuScreen.fileName = fileNameInput.next();
 			getFileNameString();
-			myFile.deleteFile(MainMenuScreen.fileName);
+			myFile.searchFile();
 		}
 		catch (NullPointerException npx) 
 		{
-			System.out.println("Unable to delete the specified file...");
+			System.out.println("Unable to search for the specified file...");
 			System.out.println("Back to main menu...");
 			takeToMainMenu();							
 		 }

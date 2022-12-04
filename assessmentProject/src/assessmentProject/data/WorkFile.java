@@ -1,8 +1,11 @@
 package assessmentProject.data;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.SortedSet;
@@ -20,126 +23,113 @@ public class WorkFile implements FileActions
 		// Setting the working directory where the files will be located
 		
 				
-		// The integer action parameter is based on the menu options (add, delete or search);
-		WorkFile.fileName = fileName;
-		WorkFile.filePath = path;
-		WorkFile.fileAction = action;
+		// The integer action parameter is based on the menu options (add=1, delete=2 or search=3);
+		WorkFile.setFileName(fileName);
+		WorkFile.setFilePath(path);
+		WorkFile.setFileAction(action);
 		
 	}
 
-	@Override
-	public File addFile(String fileName) throws FileAlreadyExistsException 
+	public void addFile(String fileName) throws NullPointerException,FileAlreadyExistsException, IOException 
 	{
 		
-		WorkFile.fileAction = 1;
-		
-		setWorkingDirectory();
-		
-		getWorkingDirectory();
-		
-		try
-		{			
-			workingFile.createNewFile();
-		}
-		catch(Exception ex)
-		{
-			System.out.println("Problems adding the file");
-		}
-		finally
-		{
-			System.out.println("The requested new file has been added");
-		}
-		
-		return workingFile;
+		WorkFile.setFileAction(1);		
+		setFileName(fileName);
 	}
-
-	@Override
-	public int deleteFile(String fileName) 
+	
+	public int deleteFile(String fileName) throws NoSuchFileException, IOException
 	{
 		
-		WorkFile.fileAction = 2;
-		
-		setPathInfo();
-		getPathInfo();
-		
-		try
-		{			
-			workingFile.delete();
-		}
-		catch(Exception ex)
-		{
-			System.out.println("Problems deleting the file");
-		}
-		finally
-		{
-			System.out.println("The requested file has been processed");
-		}
+		WorkFile.setFileAction(2);		
+		setFileName(fileName);
 		
 		return WorkFile.fileActionResult;
 	}
 
-	@Override
 	public int searchFile() 
 	{
-		WorkFile.fileAction = 3;
+		WorkFile.setFileAction(3);
 		
 		return WorkFile.fileActionResult;
 	}
 	
 	public void displayFileList()
 	{
-		WorkFile.fileAction = 4;
+		WorkFile.setFileAction(4);
 		createFileList();
 	}
 	
-	public static File getWorkingDirectory()
-	{		
-		return WorkFile.workingDirectory;
-	}
-	
-	public static Path getPathInfo()
+	public static String getFileName() 
 	{
-		return WorkFile.directoryPathInfo;
+		return WorkFile.fileName;		
 	}
-	
-	private static void setPathInfo()
+
+	public static String getFilePath() 
 	{
-		setWorkingDirectory();
-		getWorkingDirectory();
-		
-		WorkFile.directoryPathInfo.resolve(MAIN_WORKPATH);
+		return filePath;
 	}
-	
-	private static void setWorkingDirectory()
+
+	public static int getFileAction() 
 	{
-		System.setProperty("user.dir", MAIN_WORKPATH);
-		
-		WorkFile.workingDirectory = new File(WorkFile.MAIN_WORKPATH);
-		
-		if(WorkFile.workingDirectory.exists() && WorkFile.workingDirectory.isDirectory())
+		return fileAction;
+	}	
+
+	public static void setFileName(String fileName) 
+	{
+		WorkFile.fileName = fileName;
+		setFilePath(WorkFile.MAIN_WORKPATH);
+		System.out.println("Setting path to "+getFilePath());
+	}
+
+	public static void setFilePath(String filePath) 
+	{
+		if(!filePath.isBlank() && !filePath.isEmpty())
 		{
-			WorkFile.workingDirectoryExists = true;
-			System.out.println("Root Working directory for files has been set");
+			WorkFile.filePath = WorkFile.MAIN_WORKPATH;
+			System.out.println("Path is set to "+getFilePath());
 		}
-		else
+		
+		try
 		{
-			System.out.println("Root Working directory does not exist");
-			System.out.println("Creating Root Working directory now...");
+			WorkFile.directoryPathInfo = Paths.get(WorkFile.filePath.concat(getFileName()));
+			System.out.println("Working path set to " + WorkFile.directoryPathInfo.toString());
+			switch(getFileAction())
+			{
+				case 1: Files.createFile(directoryPathInfo);
+						break;
+				case 2: Files.deleteIfExists(directoryPathInfo);
+						break;
+				case 3: Files.list(directoryPathInfo);
+						break;
+				case 4: Files.walk(directoryPathInfo);
+						break;
+				default: System.out.println("Unable to perform any action");
+						break;
+			}
 			
-			WorkFile.workingDirectory = new File(WorkFile.MAIN_WORKPATH);
-			setPathInfo();
-			getPathInfo();
+		}catch (InvalidPathException ipe)
+		{
+			System.out.println("Had problems setting up your path.  Please try again.");
+		}catch (FileAlreadyExistsException aex)
+		{
+			System.out.println("File already exists.");
+		}catch (IOException e) {
+			System.out.println("Unable to complete your request...");
 		}
+		
 	}
-	
+
+	public static void setFileAction(int fileAction) 
+	{
+		WorkFile.fileAction = fileAction;
+	}	
+
+
 	private static void createFileList()
 	{
 		SortedSet<File> fileList = new TreeSet<File>();
 		
-		setWorkingDirectory();
-		getWorkingDirectory();
-		
-		
+				
 		
 		System.out.println("Generating ascending sorted file list for you...");
 		
@@ -148,22 +138,19 @@ public class WorkFile implements FileActions
 			System.out.println(fileList.toString());
 		}
 				
-	}		
-	
-	
-	private static File workingFile = null;
-	private static File workingDirectory = null;
+	}
+
+
 	private static String fileName = null;
 	private static String filePath = null;
-	private static int fileAction = 0;	
+	// For fileAction below, values are 1 to add, 2 to delete, 3 to search and 4 to display sorted list
+	private static int fileAction = 0;                  	
 	private static int fileActionResult = 0;
 	
 	private static Path directoryPathInfo = null;
 	
-	private static final String MAIN_WORKPATH = "/home/israelmoralesir/Desktop/javaPractice/assessmentProject/dataFiles";
-	
-	private static boolean workingDirectoryExists = false;
-	
+	//private static final String MAIN_WORKPATH = "/home/israelmoralesir/Desktop/javaPractice/assessmentProject/dataFiles";
+	private static final String MAIN_WORKPATH = "C:\\Users\\imora\\git\\javatraining\\assessmentProject\\dataFiles\\";
 	
 
 		
