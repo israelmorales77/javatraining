@@ -1,0 +1,35 @@
+Specification Document for the LockedMe.com App
+
+METHODOLOGY SECTION
+==============================================================
+
+Product Methodology: Agile Scrum
+
+Definition of Done:
+1.  Requirements are aligned with the code
+2.  Code is unit tested
+3.  Expected results are constant in the application
+
+Sprint Duration:  4 weeks
+Number of Sprints: 4
+
+TECHNICAL REQUIREMENTS SECTION
+==============================================================
+
+Product Capabilities:
+
+1.  The LockedMe.com application shall return the current file names in ascending order.
+    The root directory can be either empty or contain a few files or folders in it.
+2.  The LockedMe.com application shall allow the user to add new files
+3.  The LockedMe.com application shall allow the user to delete a specified files
+4.  The LockedMe.com application shall allow the user to search for a specified files
+ 
+Appearance:
+
+Given that the application is considered a prototype, the interface will be text-based.  This
+means that the user will be interacting with the application in a terminal that will be executing
+the command-line interface.  
+
+User Interactions:
+
+

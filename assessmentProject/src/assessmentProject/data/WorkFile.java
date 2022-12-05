@@ -26,37 +26,36 @@ public class WorkFile implements FileActions
 		// The integer action parameter is based on the menu options (add=1, delete=2 or search=3);
 		WorkFile.setFileName(fileName);
 		WorkFile.setFilePath(path);
-		WorkFile.setFileAction(action);
+		WorkFile.setFileAction(fileName,action);
 		
 	}
 
 	public void addFile(String fileName) throws NullPointerException,FileAlreadyExistsException, IOException 
 	{
-		
-		WorkFile.setFileAction(1);		
-		setFileName(fileName);
+		WorkFile.setFileName(fileName);
+		WorkFile.setFileAction(WorkFile.getFileName(),1);				
 	}
 	
 	public int deleteFile(String fileName) throws NoSuchFileException, IOException
 	{
-		
-		WorkFile.setFileAction(2);		
-		setFileName(fileName);
+		WorkFile.setFileName(fileName);
+		WorkFile.setFileAction(WorkFile.getFileName(),2);				
 		
 		return WorkFile.fileActionResult;
 	}
 
 	public int searchFile() 
 	{
-		WorkFile.setFileAction(3);
+		WorkFile.setFileAction(WorkFile.getFileName(),3);
 		
 		return WorkFile.fileActionResult;
 	}
 	
 	public void displayFileList()
 	{
-		WorkFile.setFileAction(4);
-		createFileList();
+		WorkFile.setFileAction(WorkFile.getFileName(),4);
+		
+		WorkFile.createFileList();
 	}
 	
 	public static String getFileName() 
@@ -66,38 +65,60 @@ public class WorkFile implements FileActions
 
 	public static String getFilePath() 
 	{
-		return filePath;
+		return WorkFile.filePath;
 	}
 
 	public static int getFileAction() 
 	{
-		return fileAction;
+		return WorkFile.fileAction;
 	}	
 
 	public static void setFileName(String fileName) 
 	{
-		WorkFile.fileName = fileName;
-		setFilePath(WorkFile.MAIN_WORKPATH);
-		System.out.println("Setting path to "+getFilePath());
+		WorkFile.setFilePath(WorkFile.MAIN_WORKPATH);		
+		
+//		WorkFile.fileName = WorkFile.getFilePath().concat(fileName); 				
+		
+		Path tmpDirectoryPathInfo = Paths.get(WorkFile.getFilePath());
+		
+		WorkFile.directoryPathInfo = tmpDirectoryPathInfo.resolve(fileName);
+		
+		System.out.println("Working request for "+ directoryPathInfo.toString());		
 	}
 
 	public static void setFilePath(String filePath) 
 	{
 		if(!filePath.isBlank() && !filePath.isEmpty())
 		{
-			WorkFile.filePath = WorkFile.MAIN_WORKPATH;
-			System.out.println("Path is set to "+getFilePath());
-		}
+			WorkFile.filePath = WorkFile.MAIN_WORKPATH;			
+		}		
 		
+		System.out.println("Setting path to " + directoryPathInfo.toString());
+	}
+
+	public static void setFileAction(String fullPath, int fileAction) 
+	{
+		WorkFile.fileName = fullPath;
+		WorkFile.fileAction = fileAction;		
+		WorkFile.processFileAction(WorkFile.getFileName(),WorkFile.getFileAction());
+	}	
+
+	private static void processFileAction(String fileName, int actionValue)
+	{
 		try
 		{
-			WorkFile.directoryPathInfo = Paths.get(WorkFile.filePath.concat(getFileName()));
-			System.out.println("Working path set to " + WorkFile.directoryPathInfo.toString());
-			switch(getFileAction())
+			
+			switch(actionValue)
 			{
 				case 1: Files.createFile(directoryPathInfo);
+						WorkFile.fileActionResult=(Files.exists(directoryPathInfo)?1:0);
+						String statusMessage = (WorkFile.getFileAction()==1?"File added":"File not added");
+						System.out.println(statusMessage);
 						break;
-				case 2: Files.deleteIfExists(directoryPathInfo);
+				case 2: Files.delete(directoryPathInfo);
+						String deleteStatusMessage = (WorkFile.getFileAction()==1?"File removed":"File not removed");
+						System.out.println(deleteStatusMessage);
+						WorkFile.fileActionResult=(Files.notExists(directoryPathInfo)?0:1);						
 						break;
 				case 3: Files.list(directoryPathInfo);
 						break;
@@ -107,6 +128,8 @@ public class WorkFile implements FileActions
 						break;
 			}
 			
+		}catch (NoSuchFileException nsf){
+			System.out.println("The specified file does not exist...");
 		}catch (InvalidPathException ipe)
 		{
 			System.out.println("Had problems setting up your path.  Please try again.");
@@ -118,12 +141,6 @@ public class WorkFile implements FileActions
 		}
 		
 	}
-
-	public static void setFileAction(int fileAction) 
-	{
-		WorkFile.fileAction = fileAction;
-	}	
-
 
 	private static void createFileList()
 	{

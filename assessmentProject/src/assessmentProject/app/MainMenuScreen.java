@@ -2,7 +2,6 @@ package assessmentProject.app;
 
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.NoSuchFileException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -92,20 +91,20 @@ public class MainMenuScreen
 		{
 			switch(itemChosen)
 			{
-				case 1:	 WorkFile.setFileAction(1);
-						 promptForFileToAdd();						 						 
+				case 1:	 promptForFileToAdd();						 						 
+//						 WorkFile.setFileAction(getFileNameString(),itemChosen);
 						 MainMenuScreen.screenLevel = 1;						
 						 break;
-				case 2:  WorkFile.setFileAction(2);
-						 promptForFileToDelete();
-						 MainMenuScreen.screenLevel = 2;						 
+				case 2:  promptForFileToDelete();
+//						 WorkFile.setFileAction(getFileNameString(),itemChosen);
+				 		 MainMenuScreen.screenLevel = 2;						 
 						 break;
-				case 3:  WorkFile.setFileAction(3);
-						 promptForFileToSearch();
+				case 3:  promptForFileToSearch();
+//						 WorkFile.setFileAction(getFileNameString(),itemChosen);
 						 MainMenuScreen.screenLevel = 3;						 
 						 break;
-				case 4:  WorkFile.setFileAction(4);
-						 myFile.displayFileList();
+				case 4:  myFile.displayFileList();
+//						 WorkFile.setFileAction(getFileNameString(),itemChosen);
 						 MainMenuScreen.screenLevel = 4;						 
 					     break;
 				case 5:  takeToMainMenu();						 
@@ -187,10 +186,10 @@ public class MainMenuScreen
 			MainMenuScreen.fileName = fileNameInput.next();
 			System.out.println("File entered was " + MainMenuScreen.fileName);
 			WorkFile.setFileName(MainMenuScreen.fileName);
-			System.out.println("Will process file " + WorkFile.getFileName());
-			WorkFile.setFilePath(WorkFile.getFileName());
-			
-			myFile.addFile(WorkFile.getFileName());			
+			//System.out.println("Will process file " + WorkFile.getFileName());
+			//WorkFile.setFilePath(WorkFile.getFileName());
+			myFile = new WorkFile(MainMenuScreen.fileName, WorkFile.getFilePath(), 1);
+			myFile.addFile(MainMenuScreen.fileName);					
 		}
 		catch (FileAlreadyExistsException e1) 
 		{
@@ -205,8 +204,9 @@ public class MainMenuScreen
 			System.out.println("Back to main menu...");
 			takeToMainMenu();							
 		 } catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Something went wrong with your request...");
+			System.out.println("Back to Main Menu");
+			takeToMainMenu();
 		}
 		fileNameInput.close();
 	
@@ -221,8 +221,9 @@ public class MainMenuScreen
 			System.out.println("Please type the name of the file you wish to delete:");
 			MainMenuScreen.fileName = fileNameInput.next();
 			WorkFile.setFileName(MainMenuScreen.getFileNameString());
-			System.out.println("Processing your request for " + getFileNameString());
-			myFile.deleteFile(MainMenuScreen.getFileNameString());
+			//System.out.println("Processing your request for " + getFileNameString());
+			myFile = new WorkFile(MainMenuScreen.fileName, WorkFile.getFilePath(), 2);
+			myFile.deleteFile(MainMenuScreen.getFileNameString());			
 		}		
 		catch (NullPointerException | IOException npx) 
 		{
@@ -243,6 +244,7 @@ public class MainMenuScreen
 			System.out.println("Please type the name of the file you wish to search for:");
 			MainMenuScreen.fileName = fileNameInput.next();
 			getFileNameString();
+			myFile = new WorkFile(MainMenuScreen.fileName, WorkFile.getFilePath(), 3);
 			myFile.searchFile();
 		}
 		catch (NullPointerException npx) 
