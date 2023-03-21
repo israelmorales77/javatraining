@@ -29,21 +29,99 @@ public class WorkFile implements FileActions
 		WorkFile.setFileAction(fileName,action);
 		
 	}
-
-	public void addFile(String fileName) throws NullPointerException,FileAlreadyExistsException, IOException 
+	
+	public static String getRootPath() 
 	{
+		// TODO Auto-generated method stub
+		return WorkFile.MAIN_WORKPATH;
+	}
+
+<<<<<<< HEAD
+	public void addFile(String fileName) throws NullPointerException,FileAlreadyExistsException, IOException 
+=======
+	public File addFile(String fileName) throws FileAlreadyExistsException, NullPointerException 
+>>>>>>> refs/remotes/origin/main
+	{
+<<<<<<< HEAD
 		WorkFile.setFileName(fileName);
 		//WorkFile.setFileAction(WorkFile.getFileName(),1);
 		Files.createFile(directoryPathInfo);
 		WorkFile.fileActionResult=(Files.exists(directoryPathInfo)?1:0);
 		String statusMessage = (WorkFile.getFileName()!=null?"File added":"File not added");
 		System.out.println(statusMessage);
+=======
+		
+		WorkFile.fileAction = 1;
+		
+		setPathInfo();
+		
+		if(fileName.length()>0 && !fileName.isEmpty())
+		{
+			WorkFile.fileName = fileName;
+			directoryPathInfo.resolve(MAIN_WORKPATH.concat(fileName));
+			try
+			{
+				System.out.println("Working on creating your new file");
+							
+				//workingFile.createNewFile();
+			}
+			catch(Exception ex)
+			{
+				System.out.println("There were problems creating a new file");			
+			}
+			finally
+			{
+				System.out.println("Your file request has been processed.");
+			}
+		}
+		else
+		{
+			System.out.println("No filename was specified...");
+		}
+		
+		return workingFile;
+>>>>>>> refs/remotes/origin/main
 	}
 	
+<<<<<<< HEAD
 	public int deleteFile(String fileName) throws NoSuchFileException, IOException
+=======
+	public int deleteFile(String fileName) 
+>>>>>>> refs/remotes/origin/main
 	{
+<<<<<<< HEAD
 		WorkFile.setFileName(fileName);
 		WorkFile.setFileAction(WorkFile.getFileName(),2);				
+=======
+		
+		WorkFile.fileAction = 2;
+		
+		setPathInfo();
+		getPathInfo();		
+		
+		if(!fileName.isEmpty() && fileName.length()>0)
+		{
+			WorkFile.fileName = fileName;
+			directoryPathInfo.resolve(MAIN_WORKPATH.concat(fileName));
+			
+			try
+			{			
+				workingFile.delete();
+			}
+			catch(Exception ex)
+			{
+				System.out.println("Problems deleting the file");
+			}
+			finally
+			{
+				System.out.println("Your request has been processed");
+			}
+		}
+		else
+		{
+			
+		}		
+>>>>>>> refs/remotes/origin/main
 		
 		return WorkFile.fileActionResult;
 	}
@@ -163,9 +241,28 @@ public class WorkFile implements FileActions
 			System.out.println(fileList.toString());
 		}
 				
+<<<<<<< HEAD
 	}
 
 
+=======
+	}		
+	
+	
+	public static WorkFile getMyFile() 
+	{
+		return myFile;
+	}
+
+	public static void setMyFile(WorkFile myFile) 
+	{
+		WorkFile.myFile = myFile;
+	}
+
+
+	private static File workingFile = null;
+	private static File workingDirectory = null;
+>>>>>>> refs/remotes/origin/main
 	private static String fileName = null;
 	private static String filePath = null;
 	// For fileAction below, values are 1 to add, 2 to delete, 3 to search and 4 to display sorted list
@@ -174,9 +271,17 @@ public class WorkFile implements FileActions
 	
 	private static Path directoryPathInfo = null;
 	
+<<<<<<< HEAD
 	//private static final String MAIN_WORKPATH = "/home/israelmoralesir/Desktop/javaPractice/assessmentProject/dataFiles";
 	private static final String MAIN_WORKPATH = "C:\\Users\\imora\\git\\javatraining\\assessmentProject\\dataFiles\\";
 	
 
+=======
+	private static final String MAIN_WORKPATH = "/home/israelmoralesir/Desktop/javaPractice/assessmentProject/dataFiles";
+	
+	private static boolean workingDirectoryExists = false;
+	
+	private static WorkFile myFile = null;
+>>>>>>> refs/remotes/origin/main
 		
 }

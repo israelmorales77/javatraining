@@ -184,12 +184,27 @@ public class MainMenuScreen
 		try 
 		{
 			System.out.println("Please type the name of the file you wish to add:");
+<<<<<<< HEAD
 			MainMenuScreen.setFileName(fileNameInput.next());
 			System.out.println("File entered was " + MainMenuScreen.getFileName());
 			WorkFile.setFileName(MainMenuScreen.getFileName());
 			System.out.println("Will process file " + WorkFile.getFileName());
 			myFile = new WorkFile(MainMenuScreen.getFileName(), WorkFile.getFilePath(), 1);
 			myFile.addFile(MainMenuScreen.fileName);					
+=======
+			MainMenuScreen.fileName = fileNameInput.next();
+			System.out.println("Working your request to add file ... "+getFileNameString().toString());
+			System.out.println("Accessing working path at ... "+WorkFile.getRootPath());
+			WorkFile.setMyFile(new WorkFile(fileName,WorkFile.getRootPath().concat(fileName),1));
+			myFile.addFile(getFileNameString());
+		}
+		catch (FileAlreadyExistsException e1) 
+		{
+			// TODO Auto-generated catch block
+			System.out.println("File already exists...");
+			System.out.println("Back to main menu...");
+			takeToMainMenu();
+>>>>>>> refs/remotes/origin/main
 		}
 		catch (NullPointerException npx) 
 		{
@@ -208,6 +223,7 @@ public class MainMenuScreen
 		try 
 		{
 			System.out.println("Please type the name of the file you wish to delete:");
+<<<<<<< HEAD
 			MainMenuScreen.fileName = fileNameInput.next();
 			WorkFile.setFileName(MainMenuScreen.getFileName());
 			//System.out.println("Processing your request for " + getFileName());
@@ -234,6 +250,11 @@ public class MainMenuScreen
 			setFileName(fileNameInput.next());
 			myFile = new WorkFile(MainMenuScreen.getFileName(), WorkFile.getFilePath(), 3);
 			myFile.searchFile();
+=======
+			MainMenuScreen.fileName = fileNameInput.next();			
+			System.out.println("Processing you deletion request of file... "+getFileNameString());
+			myFile.deleteFile(getFileNameString());
+>>>>>>> refs/remotes/origin/main
 		}
 		catch (NullPointerException npx) 
 		{
