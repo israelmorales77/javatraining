@@ -33,7 +33,11 @@ public class WorkFile implements FileActions
 	public void addFile(String fileName) throws NullPointerException,FileAlreadyExistsException, IOException 
 	{
 		WorkFile.setFileName(fileName);
-		WorkFile.setFileAction(WorkFile.getFileName(),1);				
+		//WorkFile.setFileAction(WorkFile.getFileName(),1);
+		Files.createFile(directoryPathInfo);
+		WorkFile.fileActionResult=(Files.exists(directoryPathInfo)?1:0);
+		String statusMessage = (WorkFile.getFileName()!=null?"File added":"File not added");
+		System.out.println(statusMessage);
 	}
 	
 	public int deleteFile(String fileName) throws NoSuchFileException, IOException
@@ -100,9 +104,11 @@ public class WorkFile implements FileActions
 	{
 		WorkFile.fileName = fullPath;
 		WorkFile.fileAction = fileAction;		
-		WorkFile.processFileAction(WorkFile.getFileName(),WorkFile.getFileAction());
+		//WorkFile.processFileAction(WorkFile.getFileName(),WorkFile.getFileAction());
 	}	
 
+	/*
+	
 	private static void processFileAction(String fileName, int actionValue)
 	{
 		try
@@ -141,6 +147,8 @@ public class WorkFile implements FileActions
 		}
 		
 	}
+
+*/
 
 	private static void createFileList()
 	{

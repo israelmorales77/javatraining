@@ -1,17 +1,17 @@
-package assessmentProject.app;
+package lockedme.app;
 
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
-import assessmentProject.data.WorkFile;
+import lockedme.data.WorkFile;
 
 public class MainMenuScreen
 {	
 	
 	public static void main(String[] args) 
 	{		
+		
 		displayMainScreen();
 		getMenuChoice();
 	}
@@ -47,6 +47,14 @@ public class MainMenuScreen
 		appExitOption();
 	}
 	
+	public static void getListing()
+	{
+		listAllFiles();
+		System.out.println("List of files retrieved as requested...");
+		System.out.println("Returning to main menu now...");
+		takeToMainMenu();
+	}
+	
 	public static void promptForFileToAdd()
 	{
 		try 
@@ -70,21 +78,23 @@ public class MainMenuScreen
 	
 	private static void createMenuHeader()
 	{
+		System.out.println("Welcome to LockedMe.com");
+		System.out.println("Author: Israel Morales");
+		System.out.println("Developed for: Company Lockers Pvt. Ltd.");
 		System.out.println("LockedMe.com App: Main Menu");
 	}
 	
 	private static void createMenuOptions()
 	{
-		System.out.println("1.  Add a File");
-		System.out.println("2.  Delete a File");
-		System.out.println("3.  Search a File");
-		System.out.println("4.  Get a Sorted File Listing of Existing Files in Directory");
-		System.out.println("5.  Return to Main Menu");
-		System.out.println("6.  Exit the LockedMe.com App");
+		System.out.println("1.  List all existing Files");
+		System.out.println("2.  Add a File");
+		System.out.println("3.  Delete a File");
+		System.out.println("4.  Search a File");
+		System.out.println("5.  Exit the LockedMe.com App");
 	}	
 	
 	private static void processInput()
-	{
+	{		
 		Scanner inputChoice = new Scanner(System.in);
 		
 		itemChosen = inputChoice.nextInt();
@@ -92,25 +102,15 @@ public class MainMenuScreen
 		{
 			switch(itemChosen)
 			{
-				case 1:	 promptForFileToAdd();						 						 
-//						 WorkFile.setFileAction(getFileName(),itemChosen);
-						 MainMenuScreen.screenLevel = 1;						
+				case 1:  getListing();
 						 break;
-				case 2:  promptForFileToDelete();
-//						 WorkFile.setFileAction(getFileName(),itemChosen);
-				 		 MainMenuScreen.screenLevel = 2;						 
+				case 2:	 promptForFileToAdd();						 
 						 break;
-				case 3:  promptForFileToSearch();
-//						 WorkFile.setFileAction(getFileName(),itemChosen);
-						 MainMenuScreen.screenLevel = 3;						 
+				case 3:  promptForFileToDelete();
 						 break;
-				case 4:  myFile.displayFileList();
-//						 WorkFile.setFileAction(getFileName(),itemChosen);
-						 MainMenuScreen.screenLevel = 4;						 
-					     break;
-				case 5:  takeToMainMenu();						 
-					 	 break;
-				case 6:  quitTheApp();
+				case 4:  promptForFileToSearch();
+						 break;
+				case 5:  quitTheApp();
 						 break;
 				default: System.out.println("Error with your selection");
 						 try {
@@ -175,7 +175,7 @@ public class MainMenuScreen
 		 
 		 exitConfirmation.close();
 			 
-	}
+	}	
 	
 	private static void setFileInputToAdd() throws FileAlreadyExistsException, IOException
 	{
@@ -186,17 +186,21 @@ public class MainMenuScreen
 			System.out.println("Please type the name of the file you wish to add:");
 			MainMenuScreen.setFileName(fileNameInput.next());
 			System.out.println("File entered was " + MainMenuScreen.getFileName());
-			WorkFile.setFileName(MainMenuScreen.getFileName());
-			System.out.println("Will process file " + WorkFile.getFileName());
-			myFile = new WorkFile(MainMenuScreen.getFileName(), WorkFile.getFilePath(), 1);
-			myFile.addFile(MainMenuScreen.fileName);					
+			WorkFile workFile = new WorkFile();
+			workFile.addFile(MainMenuScreen.fileName);			
 		}
 		catch (NullPointerException npx) 
 		{
 			System.out.println("Unable to add the new file...");
 			System.out.println("Back to main menu...");
 			takeToMainMenu();							
-		 }
+		}
+		finally
+		{
+			System.out.println("Add request processed...");
+			System.out.println("Returning to main menu...");
+			takeToMainMenu();
+		}
 		fileNameInput.close();
 	
 	}
@@ -209,9 +213,7 @@ public class MainMenuScreen
 		{
 			System.out.println("Please type the name of the file you wish to delete:");
 			MainMenuScreen.fileName = fileNameInput.next();
-			WorkFile.setFileName(MainMenuScreen.getFileName());
-			//System.out.println("Processing your request for " + getFileName());
-			myFile = new WorkFile(MainMenuScreen.fileName, WorkFile.getFilePath(), 2);
+			WorkFile myFile = new WorkFile();
 			myFile.deleteFile(MainMenuScreen.getFileName());			
 		}		
 		catch (NullPointerException | IOException npx) 
@@ -220,7 +222,12 @@ public class MainMenuScreen
 			System.out.println("Back to main menu...");
 			takeToMainMenu();							
 		 }
-		
+		finally
+		{
+			System.out.println("Delete request processed...");
+			System.out.println("Returning to main menu...");
+			takeToMainMenu();
+		}
 		fileNameInput.close();
 	}
 	
@@ -232,16 +239,32 @@ public class MainMenuScreen
 		{
 			System.out.println("Please type the name of the file you wish to search for:");
 			setFileName(fileNameInput.next());
-			myFile = new WorkFile(MainMenuScreen.getFileName(), WorkFile.getFilePath(), 3);
-			myFile.searchFile();
+			WorkFile myFile = new WorkFile();
+			myFile.searchFile(fileName);
 		}
 		catch (NullPointerException npx) 
 		{
 			System.out.println("Unable to search for the specified file...");
 			System.out.println("Back to main menu...");
 			takeToMainMenu();							
-		 }
+		} 
+		catch (IOException e) 
+		{
+			System.out.println("Issues with the requested search...");			
+		}
+		finally
+		{
+			System.out.println("Search request processed...");
+			System.out.println("Returning to main menu...");
+			takeToMainMenu();
+		}
 		fileNameInput.close();
+	}
+	
+	private static void listAllFiles()
+	{
+		WorkFile fileListing = new WorkFile();
+		fileListing.displayFileList();
 	}
 	
 	public static String getFileName() 
@@ -258,6 +281,4 @@ public class MainMenuScreen
 	
 	private static int screenLevel = 0;
 	private static int itemChosen = 0;	
-	
-	private static WorkFile myFile = null;
 }
