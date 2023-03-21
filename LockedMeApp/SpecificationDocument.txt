@@ -1,0 +1,53 @@
+Specification Document for the LockedMe.com App
+Author: Israel Morales
+
+METHODOLOGY SECTION
+==============================================================
+
+Product Methodology: Agile Scrum
+
+Definition of Ready:
+1.  Requirements are elicited, analized and ready for implementation
+2.  The development team will have a list of business requirements to translate to technical requirements
+3.  Technical requirements will be created based on the business requirements provided by the customer 
+
+Definition of Done:
+1.  Requirements are aligned with the code
+2.  Code is unit tested
+3.  Expected results are constant in the application
+4.  Solution is delivered to GitHub
+
+Sprint Duration:  2 weeks
+Number of Sprints: 4
+
+TECHNICAL REQUIREMENTS SECTION
+==============================================================
+
+Product Capabilities:
+
+1.  The LockedMe.com application shall return the current file names in ascending order.
+    The root directory can be either empty or contain a few files or folders in it.
+2.  The LockedMe.com application shall allow the user to add new files.
+3.  The LockedMe.com application shall allow the user to delete a specified files.
+4.  The LockedMe.com application shall allow the user to search for a specified files.
+5.  The LockedMe.com application shall display the user an option to leave the application.
+6.  The LockedMe.com application shall display a main menu with the required business functions.
+7.  The user will automatically be notified that they will be taken back to the main menu once the selected menu option and operations are completed.
+ 
+Appearance:
+
+Given that the application is considered a prototype, the interface will be text-based.  This
+means that the user will be interacting with the application by means of a console or terminal.
+
+User Interactions:
+
+1.  The user will see a main menu with information such as the Name of the Application and its Author.
+2.  The user will have the ability to display a sorted list of all the existing files if any in ascending alphabetical order.
+    Once the operation completes, the user will be notified that the operation has processed and that the system will take the user back to main menu.
+3.  The user will have the ability to add a file of their choosing by entering it in the command line interface after choosing the add option in the menu.
+    After the file is added a notification will be displayed confirming the location where the file was added.  
+    Then, the customer will be notified that they will be taken back to main menu.
+4.  The user will have the ability to delete a file of their choosing by entering it in the command line interface after choosing the delete option in the menu.
+    Once done the user will be notified which file was deleted where and that now the operation has processed and that the user will be sent back to main menu.
+5.  The user will have the ability to search for a file of their interest by entering it in the command line interface after choosing the search option in the menu.
+6.  The user will have the option to leave the application.  A confirmation question will be displayed in case the user decides to remain in the application.
